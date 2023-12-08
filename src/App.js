@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import { Routes, Route } from "react-router-dom";
+import Manna from "./pages/Manna.jsx";
+import Event from "./pages/Event.jsx";
+import Home from "./pages/Home.jsx";
+import Login from "./pages/Login.jsx";
+import RequireAuth from "./components/RequireAuth.js";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route element={<RequireAuth />}>
+            <Route path="/" element={<Manna />} />
+            <Route path="/manna" element={<Manna />} />
+            <Route path="/event" element={<Event />} />
+        </Route>
+      
+      
+    </Routes>
+  );  
 }
 
 export default App;
