@@ -53,7 +53,6 @@ const EditEvent = ({ handleFormSubmit, event, closeModal }) => {
   const [coverImage, setCoverImage] = useState();
 
   const [title, setTitle] = useState(event.title);
-  const [summary, setSummary] = useState(event.summary);
   const [startDate, setStartDate] = useState(event.startDate);
   const [endDate, setEndDate] = useState(event.endDate);
   const [regLink, setRegLink] = useState(event.registrationForm);
@@ -64,7 +63,6 @@ const EditEvent = ({ handleFormSubmit, event, closeModal }) => {
     console.log(files[0]);
     handleFormSubmit(
       title,
-      summary,
       startDate,
       endDate,
       regLink,
@@ -135,21 +133,6 @@ const EditEvent = ({ handleFormSubmit, event, closeModal }) => {
                   id="title-field"
                   class="form-control"
                   placeholder="Enter Title"
-                  required
-                />
-              </div>
-
-              <div class="mb-3">
-                <label for="summary-field" class="form-label">
-                  Summary
-                </label>
-                <input
-                  value={summary}
-                  onChange={(e) => setSummary(e.target.value)}
-                  type="text"
-                  id="summary-field"
-                  class="form-control"
-                  placeholder="Enter Summary"
                   required
                 />
               </div>

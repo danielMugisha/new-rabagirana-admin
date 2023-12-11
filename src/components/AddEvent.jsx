@@ -67,7 +67,6 @@ const AddEvent = ({ handleFormSubmit, closeModal }) => {
   ));
 
   const [title, setTitle] = useState();
-  const [summary, setSummary] = useState();
   const [startDate, setStartDate] = useState(Date.now());
   const [endDate, setEndDate] = useState(Date.now());
   const [regLink, setRegLink] = useState();
@@ -77,7 +76,6 @@ const AddEvent = ({ handleFormSubmit, closeModal }) => {
     e.preventDefault();
     handleFormSubmit(
       title,
-      summary,
       startDate,
       endDate,
       regLink,
@@ -148,21 +146,6 @@ const AddEvent = ({ handleFormSubmit, closeModal }) => {
                   id="title-field"
                   class="form-control"
                   placeholder="Enter Title"
-                  required
-                />
-              </div>
-
-              <div class="mb-3">
-                <label for="summary-field" class="form-label">
-                  Summary
-                </label>
-                <input
-                  value={summary}
-                  onChange={(e) => setSummary(e.target.value)}
-                  type="text"
-                  id="summary-field"
-                  class="form-control"
-                  placeholder="Enter Summary"
                   required
                 />
               </div>

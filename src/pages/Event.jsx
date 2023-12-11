@@ -13,7 +13,6 @@ const Event = () => {
 
   const handleFormSubmit = (
     title,
-    summary,
     startDate,
     endDate,
     regLink,
@@ -22,7 +21,6 @@ const Event = () => {
   ) => {
     const formData = new FormData();
     formData.append("title", title);
-    formData.append("summary", summary);
     formData.append("startDate", startDate);
     formData.append("endDate", endDate);
     formData.append("registrationForm", regLink);
@@ -48,7 +46,6 @@ const Event = () => {
 
   const handleEditFormSubmit = (
     title,
-    summary,
     startDate,
     endDate,
     regLink,
@@ -57,7 +54,6 @@ const Event = () => {
   ) => {
     const formData = new FormData();
     formData.append("title", title);
-    formData.append("summary", summary);
     formData.append("startDate", startDate);
     formData.append("endDate", endDate);
     formData.append("registrationForm", regLink);
@@ -162,7 +158,6 @@ const Event = () => {
                             <tr>
                               <th class="customer_name">Id</th>
                               <th class="email">Title</th>
-                              <th class="phone">Summary</th>
                               <th class="date">Start Date</th>
                               <th class="status">End Date</th>
                               <th class="action">Reg Link</th>
@@ -174,7 +169,6 @@ const Event = () => {
                               <tr>
                                 <th class="customer_name">{++count}</th>
                                 <th class="email">{event.title}</th>
-                                <th class="phone">{event.summary}</th>
                                 <th class="date">{new Date(
                                     event.startDate
                                   ).toLocaleString()}</th>
