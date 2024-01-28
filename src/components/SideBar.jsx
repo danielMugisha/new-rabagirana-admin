@@ -33,11 +33,6 @@ const SideBar = () => {
             <div id="two-column-menu">
             </div>
             <ul class="navbar-nav" id="navbar-nav">
-                {/* <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarDashboards" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
-                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Dashboard</span>
-                    </a>
-                </li> */}
                 <li class="nav-item">
                     <Link class="nav-link menu-link nav-link" to='/manna'  aria-controls="sidebarTables" data-key="t-list-js">
                     <i class="ri-layout-grid-line"></i><span class="" data-key="t-list-js">Manage Manna</span></Link>
@@ -46,6 +41,16 @@ const SideBar = () => {
                 <li class="nav-item">
                     <Link class="nav-link menu-link nav-link" to='/event'  aria-controls="sidebarTables" data-key="t-list-js">
                     <i class="ri-layout-grid-line"></i><span class="" data-key="t-list-js">Manage Events</span></Link>
+                </li>
+
+                <li class="nav-item">
+                    <Link class="nav-link menu-link nav-link" to='/story'  aria-controls="sidebarTables" data-key="t-list-js">
+                    <i class="ri-layout-grid-line"></i><span class="" data-key="t-list-js">Manage Stories</span></Link>
+                </li>
+
+                <li class="nav-item">
+                    <Link class="nav-link menu-link nav-link" to='/resource'  aria-controls="sidebarTables" data-key="t-list-js">
+                    <i class="ri-layout-grid-line"></i><span class="" data-key="t-list-js">Manage Resources</span></Link>
                 </li>
             </ul>
         </div>

@@ -18,7 +18,7 @@ const Header = () => {
             <div class="dropdown ms-sm-3 header-item topbar-user">
                 <span class="p-3" id="page-header-user-dropdown">
                     <span class="d-flex align-items-center">
-                        <img class="rounded-circle header-profile-user" src="assets/images/users/avatar-1.jpg" alt="Header Avatar"/>
+                        <img class="rounded-circle header-profile-user" src="assets/images/users/user-dummy-img.jpg" alt="Header Avatar"/>
                         <span class="text-start ms-xl-2">
                             <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{auth?.user?.username}</span>
                             <span class="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text"><button className='btn' style={{padding:0}} onClick={()=>setAuth({})}>Logout</button></span>

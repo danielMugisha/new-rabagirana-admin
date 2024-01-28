@@ -1,93 +1,62 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import ConfirmDelete from "../components/ConfirmDelete";
-import AddManna from "../components/AddManna";
-import EditManna from "../components/EditManna";
+import AddResource from "../components/AddResource";
+import ConfirmDeleteResource from "../components/ConfirmDeleteResource";
 
-const Manna = () => {
+const Resource = () => {
   const [selectedItem, setSelectedItem] = useState({});
   const [confirmDialog, setConfirmDialog] = useState(false);
   const [addDialog, setAddDialog] = useState(false);
-  const [editDialog, setEditDialog] = useState(false);
-  const [mannaArticles, setMannaArticles] = useState();
+  const url = process.env.REACT_APP_API_BASE_URL;
+  const baseUrl = process.env.REACT_APP_BASE_URL
+  const [resources, setResources] = useState();
 
-  const handleFormSubmit = (title, summary, content, author, image) => {
+  const handleFormSubmit = (
+    name,
+    category,
+    file,
+  ) => {
     const formData = new FormData();
-    formData.append("title", title);
-    formData.append("summary", summary);
-    formData.append("content", content);
-    formData.append("author", author);
-    formData.append("featuredImage", image);
-    const url = process.env.REACT_APP_API_BASE_URL;
+    formData.append("name", name);
+    formData.append("category", category);
+    formData.append("file", file);
     const accessToken = localStorage.getItem("token");
     axios
-      .post(`${url}manna`, formData, {
+      .post(`${url}resource`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${accessToken}`,
         },
       })
       .then((res) => {
-        fetchManna();
+        fetchResources();
         setAddDialog(false);
       })
       .catch((err) => {
         console.log(err);
       });
   };
-
-  const handleEditFormSubmit = (title, summary, content, author, image) => {
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("summary", summary);
-    formData.append("content", content);
-    formData.append("author", author);
-    formData.append("featuredImage", image);
-    const url = process.env.REACT_APP_API_BASE_URL;
-    const accessToken = localStorage.getItem("token");
-    axios
-      .put(`${url}manna/${selectedItem._id}`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      .then((res) => {
-        fetchManna();
-        setEditDialog(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const handleEdit = (manna) => {
-    setSelectedItem(manna);
-    setEditDialog(true);
-  };
-  const handleRemove = (manna) => {
-    setSelectedItem(manna);
+  
+  const handleRemove = (event) => {
+    setSelectedItem(event);
     setConfirmDialog(true);
   };
 
   const CloseDeleteModal = () => {
     setSelectedItem({});
-    fetchManna();
+    fetchResources();
     setConfirmDialog(false);
   };
 
   const closeAddModal = () => {
     setAddDialog(false);
   };
-  const closeEditModal = () => {
-    setEditDialog(false);
-  };
-  const fetchManna = async (req, res) => {
-    const url = process.env.REACT_APP_API_BASE_URL;
+  
+  const fetchResources = async (req, res) => {
     await axios
-      .get(`${url}manna`)
+      .get(`${url}resource`)
       .then((res) => {
-        setMannaArticles(res.data.data);
+        setResources(res.data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -95,9 +64,8 @@ const Manna = () => {
   };
 
   useEffect(() => {
-    fetchManna();
+    fetchResources();
   }, []);
-
   return (
     <div>
       <div class="main-content">
@@ -106,7 +74,7 @@ const Manna = () => {
             <div class="row">
               <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                  <h4 class="mb-sm-0">Manna Articles</h4>
+                  <h4 class="mb-sm-0">Resources</h4>
                 </div>
               </div>
             </div>
@@ -126,7 +94,7 @@ const Manna = () => {
                             <button
                               type="button"
                               class="btn btn-success add-btn"
-                              onClick={() => setAddDialog(true)}
+                              onClick={()=>setAddDialog(true)}
                             >
                               <i class="ri-add-line align-bottom me-1"></i> Add
                             </button>
@@ -142,43 +110,38 @@ const Manna = () => {
                           <thead class="table-light">
                             <tr>
                               <th class="customer_name">Id</th>
-                              <th class="email">Title</th>
-                              <th class="date">Date Created</th>
-                              <th class="status">Author</th>
+                              <th class="email">File Name</th>
+                              <th class="date">Category</th>
                               <th class="action">Action</th>
                             </tr>
                           </thead>
                           <tbody class="list form-check-all">
-                            {mannaArticles?.map((manna, count = 0) => (
+                            {resources?.map((resource, count = 0) => (
                               <tr>
                                 <th class="customer_name">{++count}</th>
-                                <th class="email">{manna.title}</th>
-                                <th class="date">
-                                  {new Date(
-                                    manna.createdAt
-                                  ).toLocaleDateString()}
-                                </th>
-                                <th class="date">{manna.author}</th>
-                                <th>
+                                <th class="email">{resource.name}</th>
+                                <th class="email">{resource.category}</th>
+                                <td>
                                   <div class="d-flex gap-2">
                                     <div class="edit">
-                                      <button
+                                      <a
                                         class="btn btn-sm btn-success edit-item-btn"
-                                        onClick={() => handleEdit(manna)}
+                                        href={`${baseUrl}${resource.featuredFile}`}
+                                        target="_blank"
                                       >
-                                        Edit
-                                      </button>
+                                        View
+                                      </a>
                                     </div>
                                     <div class="remove">
                                       <button
                                         class="btn btn-sm btn-danger remove-item-btn"
-                                        onClick={() => handleRemove(manna)}
+                                        onClick={() => handleRemove(resource)}
                                       >
                                         Remove
                                       </button>
                                     </div>
                                   </div>
-                                </th>
+                                </td>
                               </tr>
                             ))}
                           </tbody>
@@ -204,22 +167,14 @@ const Manna = () => {
                 </div>
               </div>
             </div>
-
             {addDialog && (
-              <AddManna
+              <AddResource
                 handleFormSubmit={handleFormSubmit}
                 closeModal={closeAddModal}
               />
             )}
-            {editDialog && (
-              <EditManna
-                handleFormSubmit={handleEditFormSubmit}
-                manna={selectedItem}
-                closeModal={closeEditModal}
-              />
-            )}
             {confirmDialog && (
-              <ConfirmDelete
+              <ConfirmDeleteResource
                 item={selectedItem}
                 CloseDeleteModal={CloseDeleteModal}
               />
@@ -231,4 +186,4 @@ const Manna = () => {
   );
 };
 
-export default Manna;
+export default Resource;

@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import ConfirmDelete from "../components/ConfirmDelete";
-import AddManna from "../components/AddManna";
-import EditManna from "../components/EditManna";
+import ConfirmDeleteStory from "../components/ConfirmDeleteStory";
+import EditStory from "../components/EditStory";
+import AddStory from "../components/AddStory";
 
-const Manna = () => {
+const Story = () => {
   const [selectedItem, setSelectedItem] = useState({});
   const [confirmDialog, setConfirmDialog] = useState(false);
   const [addDialog, setAddDialog] = useState(false);
   const [editDialog, setEditDialog] = useState(false);
-  const [mannaArticles, setMannaArticles] = useState();
+  const [stories, setStories] = useState();
 
   const handleFormSubmit = (title, summary, content, author, image) => {
     const formData = new FormData();
@@ -21,14 +21,14 @@ const Manna = () => {
     const url = process.env.REACT_APP_API_BASE_URL;
     const accessToken = localStorage.getItem("token");
     axios
-      .post(`${url}manna`, formData, {
+      .post(`${url}story`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${accessToken}`,
         },
       })
       .then((res) => {
-        fetchManna();
+        fetchStories();
         setAddDialog(false);
       })
       .catch((err) => {
@@ -46,14 +46,14 @@ const Manna = () => {
     const url = process.env.REACT_APP_API_BASE_URL;
     const accessToken = localStorage.getItem("token");
     axios
-      .put(`${url}manna/${selectedItem._id}`, formData, {
+      .put(`${url}story/${selectedItem._id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${accessToken}`,
         },
       })
       .then((res) => {
-        fetchManna();
+        fetchStories();
         setEditDialog(false);
       })
       .catch((err) => {
@@ -61,33 +61,31 @@ const Manna = () => {
       });
   };
 
-  const handleEdit = (manna) => {
-    setSelectedItem(manna);
+  const handleEdit = (story) => {
+    setSelectedItem(story);
     setEditDialog(true);
   };
-  const handleRemove = (manna) => {
-    setSelectedItem(manna);
+  const handleRemove = (story) => {
+    setSelectedItem(story);
     setConfirmDialog(true);
   };
-
   const CloseDeleteModal = () => {
     setSelectedItem({});
-    fetchManna();
+    fetchStories();
     setConfirmDialog(false);
   };
-
   const closeAddModal = () => {
     setAddDialog(false);
   };
   const closeEditModal = () => {
     setEditDialog(false);
   };
-  const fetchManna = async (req, res) => {
+  const fetchStories = async (req, res) => {
     const url = process.env.REACT_APP_API_BASE_URL;
     await axios
-      .get(`${url}manna`)
+      .get(`${url}story`)
       .then((res) => {
-        setMannaArticles(res.data.data);
+        setStories(res.data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -95,7 +93,7 @@ const Manna = () => {
   };
 
   useEffect(() => {
-    fetchManna();
+    fetchStories();
   }, []);
 
   return (
@@ -106,7 +104,7 @@ const Manna = () => {
             <div class="row">
               <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                  <h4 class="mb-sm-0">Manna Articles</h4>
+                  <h4 class="mb-sm-0">Stories</h4>
                 </div>
               </div>
             </div>
@@ -149,22 +147,22 @@ const Manna = () => {
                             </tr>
                           </thead>
                           <tbody class="list form-check-all">
-                            {mannaArticles?.map((manna, count = 0) => (
+                            {stories?.map((story, count = 0) => (
                               <tr>
-                                <th class="customer_name">{++count}</th>
-                                <th class="email">{manna.title}</th>
-                                <th class="date">
+                                <td class="customer_name">{++count}</td>
+                                <td class="email">{story.title}</td>
+                                <td class="date">
                                   {new Date(
-                                    manna.createdAt
+                                    story.createdAt
                                   ).toLocaleDateString()}
-                                </th>
-                                <th class="date">{manna.author}</th>
-                                <th>
+                                </td>
+                                <td class="date">{story.author}</td>
+                                <td>
                                   <div class="d-flex gap-2">
                                     <div class="edit">
                                       <button
                                         class="btn btn-sm btn-success edit-item-btn"
-                                        onClick={() => handleEdit(manna)}
+                                        onClick={() => handleEdit(story)}
                                       >
                                         Edit
                                       </button>
@@ -172,13 +170,13 @@ const Manna = () => {
                                     <div class="remove">
                                       <button
                                         class="btn btn-sm btn-danger remove-item-btn"
-                                        onClick={() => handleRemove(manna)}
+                                        onClick={() => handleRemove(story)}
                                       >
                                         Remove
                                       </button>
                                     </div>
                                   </div>
-                                </th>
+                                </td>
                               </tr>
                             ))}
                           </tbody>
@@ -206,21 +204,21 @@ const Manna = () => {
             </div>
 
             {addDialog && (
-              <AddManna
+              <AddStory
                 handleFormSubmit={handleFormSubmit}
                 closeModal={closeAddModal}
               />
             )}
             {editDialog && (
-              <EditManna
+              <EditStory
                 handleFormSubmit={handleEditFormSubmit}
-                manna={selectedItem}
+                story={selectedItem}
                 closeModal={closeEditModal}
               />
             )}
             {confirmDialog && (
-              <ConfirmDelete
-                item={selectedItem}
+              <ConfirmDeleteStory
+                story={selectedItem}
                 CloseDeleteModal={CloseDeleteModal}
               />
             )}
@@ -231,4 +229,4 @@ const Manna = () => {
   );
 };
 
-export default Manna;
+export default Story;
