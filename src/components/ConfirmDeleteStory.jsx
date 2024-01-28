@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios';
 
-const ConfirmDelete = ({story, CloseDeleteModal}) => {
+const ConfirmDeleteStory = ({story, CloseDeleteModal}) => {
     const handleDelete = () => {
         const url = process.env.REACT_APP_API_BASE_URL;
         const accessToken = localStorage.getItem('token');
@@ -41,4 +41,4 @@ const ConfirmDelete = ({story, CloseDeleteModal}) => {
   )
 }
 
-export default ConfirmDelete
+export default ConfirmDeleteStory
