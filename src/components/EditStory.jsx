@@ -105,7 +105,7 @@ const EditStory = ({ handleFormSubmit, story, closeModal }) => {
                       <img
                         src={
                         files[0]?.preview ??
-                          `${process.env.REACT_APP_BASE_URL}${story.featuredImage}`
+                          `https://pixabay.com/photos/urban-fashion-denim-outfit-9639853/`
                         }
                         style={img}
                         alt="story"
