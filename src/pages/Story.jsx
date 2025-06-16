@@ -83,7 +83,7 @@ const Story = () => {
   const fetchStories = async (req, res) => {
     const url = process.env.REACT_APP_API_BASE_URL;
     await axios
-      .get(`${url}story`)
+      .get(`${url}stories`)
       .then((res) => {
         setStories(res.data.data);
       })

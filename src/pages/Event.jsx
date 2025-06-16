@@ -101,7 +101,7 @@ const Event = () => {
   const fetchEvents = async (req, res) => {
     const url = process.env.REACT_APP_API_BASE_URL;
     await axios
-      .get(`${url}event`)
+      .get(`${url}events`)
       .then((res) => {
         setEvents(res.data.data);
       })

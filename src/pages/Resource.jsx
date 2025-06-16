@@ -54,7 +54,7 @@ const Resource = () => {
   
   const fetchResources = async (req, res) => {
     await axios
-      .get(`${url}resource`)
+      .get(`${url}resources`)
       .then((res) => {
         setResources(res.data.data);
       })
