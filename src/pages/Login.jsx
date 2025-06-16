@@ -18,33 +18,30 @@ const Login = () => {
 
     const handleSubmit = async(e) => {
         e.preventDefault();
-        const url = process.env.REACT_APP_API_BASE_URL;
-        axios.post(`${url}auth/signin`, 
-                JSON.stringify({
+        const url = process.env.REACT_APP_AUTH_BASE_URL;
+        axios.post(`${url}auth/signin`, {
                 username: user,
                 password: pwd
-            }), {
+            }, {
                 headers: {
                     'Content-Type': 'application/json'
-                },
-            }
-        ).then((res)=>{
+                }
+            })
+        .then((res)=>{
             if(res.status === 200) {
                 const result = res.data
                 localStorage.setItem('token', result.data.accessToken);
                 setAuth(result.data)
                 setUser('')
-            setPwd('')
-            navigate(from, {replace: true});
+                setPwd('')
+                navigate(from, {replace: true});
             } else {
                 setErrMsg(res.message);
             }
-            
-        }).catch(err=>{
-            setErrMsg(err.message);
         })
-        
-        
+        .catch(err=>{
+            setErrMsg(err.response?.data?.message || err.message);
+        })
     }
 
     useEffect(() => {
