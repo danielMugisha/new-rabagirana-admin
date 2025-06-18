@@ -113,7 +113,7 @@ const EditEvent = ({ handleFormSubmit, event, closeModal }) => {
                       <img
                         src={
                           coverImage?.preview ??
-                          `${process.env.REACT_APP_BASE_URL}${event.featuredImage}`
+                          `${process.env.REACT_APP_AUTH_BASE_URL}${event.featuredImage}`
                         }
                         style={img}
                         alt="manna"

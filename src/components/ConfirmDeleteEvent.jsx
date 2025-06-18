@@ -6,7 +6,7 @@ const ConfirmDeleteEvent = ({item, CloseDeleteModal}) => {
         const url = process.env.REACT_APP_API_BASE_URL;
         const accessToken = localStorage.getItem('token');
         console.log(CloseDeleteModal)
-        axios.delete(`${url}event/${item._id}`, {
+        axios.delete(`${url}events/${item._id}`, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
