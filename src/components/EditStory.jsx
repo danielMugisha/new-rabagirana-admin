@@ -31,18 +31,46 @@ const img = {
 
 const EditStory = ({ handleFormSubmit, story, closeModal }) => {
   const [files, setFiles] = useState([]);
-  const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
+  const [imageError, setImageError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
+  const [imageUrl, setImageUrl] = useState("");
+
+  useEffect(() => {
+    // Clean up the image path and construct the URL correctly
+    const url = `${process.env.REACT_APP_AUTH_BASE_URL}uploads/${story.featuredImage}`;
+    console.log("Image URL:", url);
+    console.log("Story featured image path:", story.featuredImage);
+    setImageUrl(url);
+  }, [story.featuredImage]);
+
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: {
+      "image/*": [".jpeg", ".jpg", ".png", ".gif"],
+    },
     multiple: false,
     onDrop: (acceptedFiles) => {
-      setFiles(
-        acceptedFiles.map((file) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          })
-        )
+      setImageError(false);
+      const newFiles = acceptedFiles.map((file) =>
+        Object.assign(file, {
+          preview: URL.createObjectURL(file),
+        })
       );
+      console.log("New files:", newFiles);
+      setFiles(newFiles);
     },
   });
+
+  const handleRetryImage = () => {
+    setImageError(false);
+    setRetryCount((prev) => prev + 1);
+    console.log("Retrying image load, attempt:", retryCount + 1);
+  };
+
+  const handleImageError = () => {
+    console.error("Image failed to load:", imageUrl);
+    setImageError(true);
+  };
+
   const [coverImage, setCoverImage] = useState(story.featuredImage);
 
   const editorRef = useRef(null);
@@ -63,6 +91,7 @@ const EditStory = ({ handleFormSubmit, story, closeModal }) => {
     handleFormSubmit(title, summary, content, author, files[0] ?? null);
   };
   useEffect(() => {
+    console.log("Files changed:", files);
     setCoverImage(files[0]);
     return () => {
       files?.forEach((file) => URL.revokeObjectURL(file.preview));
@@ -96,22 +125,53 @@ const EditStory = ({ handleFormSubmit, story, closeModal }) => {
                 <label for="photo-field" class="form-label">
                   Cover Image
                 </label>
-                <div
-                    className=
-                      " d-flex justify-content-center align-items-center"
-                >
-                  <div style={thumb}>
-                    <div style={thumbInner}>
-                      <img
-                        src={
-                        files[0]?.preview ??
-                          `https://pixabay.com/photos/urban-fashion-denim-outfit-9639853/`
-                        }
-                        style={img}
-                        alt="story"
-                      />
+                <div className="d-flex flex-column align-items-center">
+                  {imageError ? (
+                    <div className="text-center mb-3">
+                      <p className="text-danger">Failed to load image</p>
+                      <div className="d-flex gap-2">
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          onClick={handleRetryImage}
+                        >
+                          Retry Loading Image
+                        </button>
+                        <div {...getRootProps()}>
+                          <button type="button" className="btn btn-primary">
+                            Upload New Image
+                          </button>
+                          <input {...getInputProps()} />
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div style={thumb} className="position-relative">
+                      <div style={thumbInner}>
+                        <img
+                          key={retryCount}
+                          src={files[0]?.preview ?? imageUrl}
+                          style={img}
+                          alt="story"
+                          onError={handleImageError}
+                          crossOrigin="anonymous"
+                        />
+                      </div>
+                      <div
+                        {...getRootProps()}
+                        className="position-absolute top-0 end-0 m-2"
+                      >
+                        <input {...getInputProps()} />
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-light"
+                          title="Change image"
+                        >
+                          <i className="ri-image-edit-line"></i>
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 

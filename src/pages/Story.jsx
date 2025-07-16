@@ -21,7 +21,7 @@ const Story = () => {
     const url = process.env.REACT_APP_API_BASE_URL;
     const accessToken = localStorage.getItem("token");
     axios
-      .post(`${url}story`, formData, {
+      .post(`${url}stories`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${accessToken}`,
